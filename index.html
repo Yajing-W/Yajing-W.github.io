@@ -19,12 +19,13 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     html, body {
-      height: 100%;
+      min-height: 100%;
       background: var(--pink);
       color: var(--ink);
       font-family: 'Inter', system-ui, -apple-system, sans-serif;
       -webkit-font-smoothing: antialiased;
-      overflow: hidden;              /* single-viewport: no scroll */
+      overflow-x: hidden;            /* clip horizontal only */
+      overflow-y: auto;              /* allow scroll when window is too short */
     }
 
     /* ---------- Top bar ---------- */
@@ -423,12 +424,25 @@
       .scroll-hint { display: none; }
     }
 
-    @media (max-height: 720px) {
-      .word { font-size: clamp(30px, 6vw, 70px) !important; }
-      .word--soft     { font-size: clamp(36px, 7vw, 82px) !important; }
-      .word--beautiful{ font-size: clamp(32px, 6.2vw, 74px) !important; }
-      .word--powerful { font-size: clamp(34px, 6.5vw, 78px) !important; }
-      .word--woman    { font-size: clamp(36px, 7.2vw, 86px) !important; }
+    @media (max-height: 820px) {
+      .hero { padding: 88px 24px 40px; }
+      .word { font-size: clamp(30px, 5.5vh, 80px) !important; }
+      .word--soft     { font-size: clamp(36px, 6.5vh, 92px) !important; }
+      .word--beautiful{ font-size: clamp(32px, 5.6vh, 84px) !important; }
+      .word--powerful { font-size: clamp(34px, 5.8vh, 88px) !important; }
+      .word--woman    { font-size: clamp(36px, 6.5vh, 96px) !important; }
+      .tagline { margin-top: clamp(14px, 2vh, 28px); }
+      .index   { margin-top: clamp(16px, 2.4vh, 32px); }
+    }
+
+    @media (max-height: 620px) {
+      .hero { padding: 72px 24px 56px; }
+      .word { font-size: clamp(26px, 5vh, 56px) !important; }
+      .word--soft     { font-size: clamp(30px, 6vh, 64px) !important; }
+      .word--beautiful{ font-size: clamp(28px, 5.2vh, 58px) !important; }
+      .word--powerful { font-size: clamp(28px, 5.4vh, 60px) !important; }
+      .word--woman    { font-size: clamp(30px, 6vh, 66px) !important; }
+      .words { gap: 0 !important; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -453,7 +467,7 @@
       <a href="#projects">Projects</a>
       <a href="#publications">Publications</a>
       <a href="#experience">Experience</a>
-      <a href="#placebo">Placebo</a>
+      <a href="placebo.html">Placebo</a>
     </nav>
   </header>
 
@@ -485,7 +499,7 @@
         <a href="#projects"><span class="num">01</span>Projects</a>
         <a href="#publications"><span class="num">02</span>Publications</a>
         <a href="#experience"><span class="num">03</span>Experience</a>
-        <a href="#placebo"><span class="num">04</span>Placebo</a>
+        <a href="placebo.html"><span class="num">04</span>Placebo</a>
       </nav>
     </div>
   </main>
