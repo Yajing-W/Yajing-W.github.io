@@ -11,6 +11,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Inter:wght@300;400;500;600&family=Italiana&family=Long+Cang&family=Noto+Serif+SC:wght@400;600&family=Caveat:wght@400;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Satisfy&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Zhi+Mang+Xing&display=swap" rel="stylesheet">
 
   <style>
     :root{
@@ -28,7 +30,7 @@
       --f-display: "Italiana", serif;
       --f-serif:   "Fraunces", serif;
       --f-sans:    "Inter", ui-sans-serif, system-ui, sans-serif;
-      --f-hand:    "Caveat", cursive;
+      --f-hand:    "Satisfy", cursive;
       --f-cn:      "Long Cang", "Noto Serif SC", serif;
     }
 
@@ -56,41 +58,44 @@
 
     a{ color:inherit; }
 
-    /* ───────── top bar (logo + back + page num) ───────── */
+    /* ───────── top bar (brand logo — matches homepage & placebo hub) ───────── */
     .bar{
       position:relative; z-index:3;
       display:flex; align-items:center; justify-content:space-between;
-      padding: clamp(18px, 3.2vw, 32px) clamp(20px, 4.2vw, 54px);
+      padding: 28px clamp(24px, 4.2vw, 56px);
     }
-    .logo{
-      font-family:var(--f-cn);
-      font-size: clamp(28px, 3.2vw, 40px);
-      line-height:1;
-      color:var(--ink);
-      text-decoration:none;
-      letter-spacing:.02em;
-      position:relative;
-      display:inline-block;
-      min-width: 5ch;
+    .brand {
+      position: relative;
+      display: inline-block;
+      font-size: 22px;
+      color: var(--ink);
+      text-decoration: none;
+      line-height: 1.2;
+      min-width: 7em;
+      height: 1.5em;
     }
-    .logo .logo__cn,
-    .logo .logo__en{
-      transition: opacity .18s ease;
+    .brand__name {
+      position: absolute;
+      left: 0; top: 0;
+      white-space: nowrap;
+      opacity: 0;
+      transition: opacity 0.08s ease;
     }
-    .logo .logo__en{
-      font-family:"Fraunces", serif;
+    .brand__name.is-active { opacity: 1; }
+    .brand__name--en {
+      font-family: 'Fraunces', serif;
       font-style: italic;
       font-weight: 500;
-      letter-spacing:0.4px;
-      font-size: 20px;
-      position:absolute; inset:0;
-      display:flex; align-items:center;
-      opacity:0;
+      letter-spacing: 0.4px;
     }
-    .logo.is-en .logo__cn{ opacity:0; }
-    .logo.is-en .logo__en{ opacity:1; }
-    .logo.flash-off .logo__cn,
-    .logo.flash-off .logo__en{ opacity:0; }
+    .brand__name--cn {
+      font-family: 'Zhi Mang Xing', 'Noto Serif SC', serif;
+      font-weight: 400;
+      font-size: 1.6em;
+      letter-spacing: 0.04em;
+      line-height: 1;
+      top: -0.1em;
+    }
 
     .crumbs{
       font-family:var(--f-sans);
@@ -123,29 +128,30 @@
     .masthead__kicker .tilde{ color:var(--leaf); font-family:var(--f-serif); font-style:italic; letter-spacing:0; }
 
     .masthead__title{
-      font-family:var(--f-display);
-      font-size: clamp(80px, 16vw, 220px);
-      line-height:.88;
-      letter-spacing:-.01em;
-      margin:0;
-      color:var(--ink);
-      position:relative;
+      font-family: "Fraunces", serif;
+      font-weight: 600;
+      font-optical-sizing: auto;
+      font-variation-settings: "opsz" 144;
+      font-size: clamp(78px, 15vw, 210px);
+      line-height: .92;
+      letter-spacing: -0.035em;
+      margin: 0;
+      color: var(--ink);
+      position: relative;
     }
-    .masthead__title .ampersand{
-      font-family:var(--f-serif);
-      font-style:italic;
-      font-weight:400;
-      color:var(--pink-hot);
+    .masthead__title .paw{
+      display: inline-block;
+      width: .52em;
+      height: .52em;
+      margin-left: .12em;
+      vertical-align: .02em;
+      color: var(--pink-hot);
+      transform: rotate(-14deg);
     }
-    .masthead__title .flourish{
-      display:inline-block;
-      font-family:var(--f-serif);
-      font-style:italic;
-      font-size:.36em;
-      color:var(--leaf);
-      vertical-align: .5em;
-      margin-left:.25em;
-      opacity:.75;
+    .masthead__title .paw svg{
+      width:100%; height:100%;
+      fill: currentColor;
+      overflow: visible;
     }
 
     .masthead__meta{
@@ -184,21 +190,25 @@
     /* ───────── intro strip ───────── */
     .intro{
       position:relative; z-index:2;
-      padding: 0 clamp(20px, 5vw, 64px);
-      max-width: 900px;
+      padding: 0 clamp(16px, 4vw, 56px);         /* matches .gallery */
+      max-width: 1500px;                         /* matches .gallery */
       margin: 0 auto clamp(28px, 4vw, 56px);
     }
     .intro__lede{
-      font-family:var(--f-serif);
-      font-weight:400;
-      font-size: clamp(18px, 1.7vw, 22px);
-      line-height:1.55;
-      color:var(--ink);
-      max-width: 58ch;
+      font-family: "Satisfy", cursive;
+      font-weight: 500;
+      font-size: clamp(22px, 2.1vw, 32px);
+      line-height: 1.45;
+      color: var(--ink);
+      max-width: 100%;                           /* flows full width of the gallery container */
+      letter-spacing: 0.03em;
     }
     .intro__lede em{
-      font-style:italic;
-      color:var(--leaf);
+      font-family: "Fraunces", serif;
+      font-style: italic;
+      font-weight: 500;
+      color: var(--leaf);
+      font-size: .88em;                          /* Fraunces runs larger than Caveat, balance it */
     }
     .intro__note{
       font-family:var(--f-hand);
@@ -301,26 +311,45 @@
       margin: 0 auto;
     }
     .coda__mark{
-      font-family:var(--f-serif);
-      font-style:italic;
-      font-size: clamp(22px, 2vw, 28px);
-      color:var(--leaf);
-      letter-spacing:.02em;
+      display: inline-flex;
+      justify-content: center;
+      width: clamp(22px, 2vw, 28px);
+      height: clamp(22px, 2vw, 28px);
+      color: var(--pink-hot);
+      margin-bottom: .5rem;
+    }
+    .coda__mark svg{
+      width:100%; height:100%;
+      fill: currentColor;
+      transform: rotate(12deg);
     }
     .coda__line{
-      font-family:var(--f-display);
-      font-size: clamp(30px, 4.4vw, 58px);
-      line-height:1.15;
-      color:var(--ink);
-      margin:.4rem 0 .4rem;
+      font-family: "Fraunces", serif;
+      font-weight: 500;
+      font-style: italic;
+      font-size: clamp(26px, 3.4vw, 46px);
+      line-height: 1.22;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+      margin: .4rem 0 .8rem;
     }
     .coda__cite{
-      font-family:var(--f-sans);
-      font-size: 11px;
-      letter-spacing:.3em;
-      text-transform:uppercase;
-      color:var(--ink-soft);
-      opacity:.7;
+      font-family: "Fraunces", serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: clamp(12px, 1vw, 14px);
+      letter-spacing: .04em;
+      color: var(--ink-soft);
+      opacity: .75;
+    }
+    .coda__cite .ring{
+      display: inline-block;
+      width: .7em; height: .7em;
+      border: 1.2px solid currentColor;
+      border-radius: 50%;
+      vertical-align: -0.05em;
+      margin: 0 .45em 0 0;
+      opacity: .65;
     }
 
     /* ───────── footer ───────── */
@@ -362,9 +391,9 @@
   <span class="corner br" aria-hidden="true"></span>
 
   <header class="bar">
-    <a href="../index.html" class="logo" id="logo" aria-label="Yajing Wang — home">
-      <span class="logo__cn">王雅靖</span>
-      <span class="logo__en">Yajing Wang</span>
+    <a href="../index.html" class="brand" aria-label="Yajing Wang - 王雅靖">
+      <span class="brand__name brand__name--en is-active">Yajing Wang</span>
+      <span class="brand__name brand__name--cn">王雅靖</span>
     </a>
     <nav class="crumbs" aria-label="breadcrumb">
       <a href="../index.html">Home</a>
@@ -381,9 +410,7 @@
         <span>§ 04 · 01 — the cat chapter</span>
         <span class="tilde">ex libris felis</span>
       </div>
-      <h1 class="masthead__title">
-        Thranduil<span class="flourish">the fluffy</span>
-      </h1>
+      <h1 class="masthead__title">Thranduil<span class="paw" aria-hidden="true"><svg viewBox="0 0 32 32"><ellipse cx="6.5" cy="12" rx="2.5" ry="3.1"/><ellipse cx="12.5" cy="7.5" rx="2.5" ry="3.1"/><ellipse cx="19.5" cy="7.5" rx="2.5" ry="3.1"/><ellipse cx="25.5" cy="12" rx="2.5" ry="3.1"/><path d="M16 13.4c-4.6 0-7.9 3.2-7.9 7.1 0 3.2 2.9 5 7.9 5s7.9-1.8 7.9-5c0-3.9-3.3-7.1-7.9-7.1z"/></svg></span></h1>
       <div class="masthead__meta">
         <div class="meta__item">
           breed
@@ -393,12 +420,12 @@
           arrived
           <b>17 · XII · 2021</b>
         </div>
-        <div class="meta__item">
+        <!-- <div class="meta__item">
           coat
           <b>Brown tabby &amp; white</b>
-        </div>
+        </div> -->
         <div class="meta__item">
-          realm
+          realm<br>
           <span class="hand">wherever the sunbeam lands</span>
         </div>
       </div>
@@ -406,12 +433,12 @@
 
     <section class="intro">
       <p class="intro__lede">
-        Named after the king of <em>the Woodland Realm</em>, though his own realm is more hallway rug
-        than Mirkwood. A brown-tabby-and-white cloud with golden eyes, a white blaze down the nose,
-        and a ruff that deserves its own weather report. He is long, loud, and suspicious of strangers
-        until he is not — then he is very much not. This room is his: a small archive of sunbeams,
-        paws, and the particular way a Maine Coon takes up a whole sofa while appearing to take up
-        very little of it.
+        Named after the king of the <b>Woodland Realm</b>, though his kingdom is mostly the room. 
+        A shy, quiet boy with a gentle, warm heart, he takes his time before trusting, 
+        but once he does, it’s all at once. He prefers to observe rather than demand, 
+        to stay close without asking for attention. What follows are mostly photographs 
+        of him doing very little — which, as it turns out, is most of what he does. 
+        And somehow, it’s more than enough.
       </p>
     </section>
 
@@ -478,8 +505,11 @@
     </section>
 
     <section class="coda">
-      <div class="coda__mark">❦</div>
-      <p class="coda__line">“Not all those who wander are cats — <br/>but in this house, most of them are.”</p>
+      <div class="coda__mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32"><ellipse cx="6.5" cy="12" rx="2.5" ry="3.1"/><ellipse cx="12.5" cy="7.5" rx="2.5" ry="3.1"/><ellipse cx="19.5" cy="7.5" rx="2.5" ry="3.1"/><ellipse cx="25.5" cy="12" rx="2.5" ry="3.1"/><path d="M16 13.4c-4.6 0-7.9 3.2-7.9 7.1 0 3.2 2.9 5 7.9 5s7.9-1.8 7.9-5c0-3.9-3.3-7.1-7.9-7.1z"/></svg>
+      </div>
+      <p class="coda__line">“Not all those who wander are cats — <br/>but the one in this house, most certainly, is.”</p>
+      <p class="coda__cite"><span class="ring" aria-hidden="true"></span>after Tolkien, gently bent</p>
     </section>
   </main>
 
@@ -490,18 +520,16 @@
   </footer>
 
   <script>
-    // flashing bilingual logo — matches homepage & placebo hub
-    (function(){
-      const logo = document.getElementById('logo');
-      if(!logo) return;
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-      let isEn = false;
+    // flashing bilingual logo — identical to homepage & placebo hub
+    (function () {
+      const names = document.querySelectorAll('.brand__name');
+      if (!names.length) return;
+      let i = 0;
       setInterval(() => {
-        logo.classList.add('flash-off');
+        names[i].classList.remove('is-active');
         setTimeout(() => {
-          isEn = !isEn;
-          logo.classList.toggle('is-en', isEn);
-          logo.classList.remove('flash-off');
+          i = (i + 1) % names.length;
+          names[i].classList.add('is-active');
         }, 90);
       }, 2400);
     })();
