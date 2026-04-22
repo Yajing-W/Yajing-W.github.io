@@ -13,6 +13,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Inter:wght@300;400;500;600&family=Italiana&family=Long+Cang&family=Noto+Serif+SC:wght@400;600&family=Caveat:wght@400;600&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Satisfy&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Zhi+Mang+Xing&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Kalam&display=swap" rel="stylesheet">
 
   <style>
     :root{
@@ -113,8 +114,6 @@
     .masthead{
       position:relative; z-index:2;
       padding: clamp(14px, 3vw, 40px) clamp(20px, 5vw, 64px) clamp(24px, 4vw, 48px);
-      max-width: 1500px;
-      margin:0 auto;
     }
     .masthead__kicker{
       font-family:var(--f-sans);
@@ -190,12 +189,11 @@
     /* ───────── intro strip ───────── */
     .intro{
       position:relative; z-index:2;
-      padding: 0 clamp(16px, 4vw, 56px);         /* matches .gallery */
-      max-width: 1500px;                         /* matches .gallery */
-      margin: 0 auto clamp(28px, 4vw, 56px);
+      padding: 0 clamp(16px, 4vw, 56px);         /* matches .gallery padding */
+      margin: 0 0 clamp(28px, 4vw, 56px);
     }
     .intro__lede{
-      font-family: "Satisfy", cursive;
+      font-family: "Kalam", cursive;
       font-weight: 500;
       font-size: clamp(22px, 2.1vw, 32px);
       line-height: 1.45;
@@ -223,13 +221,14 @@
     .gallery{
       position:relative; z-index:2;
       padding: 0 clamp(16px, 4vw, 56px);
-      max-width: 1500px;
-      margin: 0 auto clamp(56px, 8vw, 120px);
+      margin: 0 0 clamp(56px, 8vw, 120px);
       column-count: 3;
       column-gap: clamp(10px, 1.4vw, 18px);
     }
-    @media (max-width: 980px){ .gallery{ column-count: 2; } }
-    @media (max-width: 560px){ .gallery{ column-count: 1; } }
+    @media (min-width: 1400px){ .gallery{ column-count: 4; } }
+    @media (min-width: 1900px){ .gallery{ column-count: 5; } }
+    @media (max-width: 980px){  .gallery{ column-count: 2; } }
+    @media (max-width: 560px){  .gallery{ column-count: 1; } }
 
     figure.shot{
       break-inside: avoid;
@@ -307,8 +306,6 @@
       position:relative; z-index:2;
       text-align:center;
       padding: 0 clamp(20px, 5vw, 64px) clamp(60px, 8vw, 120px);
-      max-width: 900px;
-      margin: 0 auto;
     }
     .coda__mark{
       display: inline-flex;
@@ -437,7 +434,7 @@
         A shy, quiet boy with a gentle, warm heart, he takes his time before trusting, 
         but once he does, it’s all at once. He prefers to observe rather than demand, 
         to stay close without asking for attention. What follows are mostly photographs 
-        of him doing very little — which, as it turns out, is most of what he does. 
+        of him doing very little, as it turns out, which is most of what he does. 
         And somehow, it’s more than enough.
       </p>
     </section>

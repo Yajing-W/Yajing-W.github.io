@@ -125,8 +125,6 @@
       padding: 140px clamp(24px, 6vw, 96px) 120px;
       position: relative;
       z-index: 2;
-      max-width: 1440px;
-      margin: 0 auto;
     }
 
     /* ---------- Hero intro ---------- */
@@ -175,6 +173,20 @@
       grid-template-columns: repeat(4, 1fr);
       grid-auto-rows: minmax(180px, 22vw);
       gap: clamp(12px, 1.4vw, 20px);
+    }
+    /* on larger monitors, widen the grid so tiles don't balloon */
+    @media (min-width: 1400px) {
+      .bento {
+        grid-template-columns: repeat(6, 1fr);
+        grid-auto-rows: minmax(200px, 16vw);
+      }
+    }
+    @media (min-width: 1900px) {
+      .bento {
+        /* stay at 6 cols on huge screens — tiles just breathe more */
+        grid-auto-rows: minmax(220px, 14vw);
+        gap: 22px;
+      }
     }
 
     .tile {
@@ -304,10 +316,12 @@
       pointer-events: none;
     }
     .tile--cats .tile__num,
-    .tile--cats .tile__arrow,
     .tile--cats .tile__meta {
       position: relative;
       z-index: 2;
+    }
+    .tile--cats .tile__arrow {
+      z-index: 2;                       /* keep absolute from base rule, lift above overlay */
     }
     .tile--cats .tile__num {
       color: rgba(255, 255, 255, 0.85);
@@ -377,25 +391,113 @@
       font-size: clamp(56px, 6vw, 92px);
     }
 
-    /* 04. Snakes — full width (4x1) along the bottom, sage green */
+    /* 04. Snakes — half width (2x1), photo cover */
     .tile--snakes {
-      grid-column: span 4;
-      background: linear-gradient(135deg, #a5b583 0%, #6e8a5d 100%);
-      color: #1b2b18;
+      grid-column: span 2;
+      background: #1e2a16;              /* matte fallback while image loads */
+      color: #fff;
+    }
+    .tile--snakes .tile__cover {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 40%;      /* keep Pepper's head nicely in frame */
+      z-index: 0;
+      transition: transform 1.2s cubic-bezier(.2,.8,.2,1), filter 0.6s ease;
+      filter: saturate(1.02);
     }
     .tile--snakes::before {
-      /* scaly dot pattern */
+      /* soft gradient overlay — darkens the bottom so the title stays legible */
       content: "";
       position: absolute;
       inset: 0;
-      background-image:
-        radial-gradient(circle, rgba(255,255,255,0.22) 1.4px, transparent 1.8px);
-      background-size: 14px 14px;
-      opacity: 0.6;
-      z-index: -1;
+      background:
+        linear-gradient(180deg,
+          rgba(0,0,0,0) 0%,
+          rgba(0,0,0,0) 40%,
+          rgba(16, 24, 12, 0.55) 82%,
+          rgba(16, 24, 12, 0.75) 100%),
+        linear-gradient(180deg,
+          rgba(0,0,0,0.22) 0%,
+          rgba(0,0,0,0) 30%);
+      z-index: 1;
+      pointer-events: none;
+    }
+    .tile--snakes .tile__num,
+    .tile--snakes .tile__meta {
+      position: relative;
+      z-index: 2;
+    }
+    .tile--snakes .tile__arrow {
+      z-index: 2;
+    }
+    .tile--snakes .tile__num {
+      color: rgba(255, 255, 255, 0.85);
+      letter-spacing: 0.24em;
+    }
+    .tile--snakes .tile__title {
+      color: #fff;
+      text-shadow: 0 2px 18px rgba(0, 0, 0, 0.35);
+    }
+    .tile--snakes .tile__kicker {
+      color: rgba(255, 255, 255, 0.9);
+      text-shadow: 0 1px 10px rgba(0, 0, 0, 0.3);
+    }
+    .tile--snakes .tile__arrow {
+      background: rgba(255, 255, 255, 0.88);
+      color: #1e2a16;
+    }
+    .tile--snakes .tile__arrow::after {
+      color: #1e2a16;
+    }
+    .tile--snakes:hover .tile__cover {
+      transform: scale(1.06);
+      filter: saturate(1.08) brightness(1.02);
+    }
+    .tile--snakes:hover .tile__arrow {
+      background: #fff;
     }
 
-    /* 05. More coming — medium (2x1), blush with dashed border */
+    /* 05. Color Notes — paint-chip card with swatch strip */
+    .tile--color {
+      grid-column: span 2;
+      background: linear-gradient(150deg, #faf3e0 0%, #ecd9b6 100%);
+      color: #2b1f1a;
+    }
+    .tile--color::before {
+      /* paint-chip strip across the bottom third */
+      content: "";
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      height: 34%;
+      background:
+        linear-gradient(90deg,
+          #c65a4f 0,     #c65a4f 16.66%,
+          #e8a864 16.66%, #e8a864 33.33%,
+          #c9b553 33.33%, #c9b553 50%,
+          #6fa378 50%,    #6fa378 66.66%,
+          #5a7ba0 66.66%, #5a7ba0 83.33%,
+          #8e6d9a 83.33%, #8e6d9a 100%);
+      z-index: -1;
+    }
+    .tile--color::after {
+      /* thin separator with a dashed 'note card' feel */
+      content: "";
+      position: absolute;
+      left: 0; right: 0;
+      bottom: 34%;
+      height: 1px;
+      background: rgba(27, 17, 20, 0.15);
+      z-index: 0;
+    }
+    .tile--color .tile__art {
+      font-size: clamp(48px, 5.5vw, 86px);
+      filter: drop-shadow(0 4px 10px rgba(0,0,0,0.08));
+    }
+
+    /* 06. More coming — medium (2x1), blush with dashed border */
     .tile--more {
       grid-column: span 2;
       background: transparent;
@@ -439,6 +541,7 @@
       .tile--clouds,
       .tile--photo,
       .tile--snakes,
+      .tile--color,
       .tile--more   { grid-column: span 2; grid-row: span 1; }
     }
     @media (max-width: 560px) {
@@ -565,12 +668,22 @@
       </a>
 
       <a class="tile tile--snakes" href="placebo/snakes.html" aria-label="Snakes">
+        <img class="tile__cover" src="assets/snakes/pepper/pepper-01.jpg" alt="Pepper, a ball python, peering through the leaves of her enclosure" loading="lazy" />
         <span class="tile__num">№ 04</span>
         <span class="tile__arrow" aria-hidden="true"></span>
-        <div class="tile__art" aria-hidden="true">🐍</div>
         <div class="tile__meta">
           <h2 class="tile__title">Snakes</h2>
-          <p class="tile__kicker">the misunderstood. gentle, curious, gorgeous.</p>
+          <p class="tile__kicker">Life is short, but snakes are Long.</p>
+        </div>
+      </a>
+
+      <a class="tile tile--color" href="placebo/colors.html" aria-label="Color Notes">
+        <span class="tile__num">№ 05</span>
+        <span class="tile__arrow" aria-hidden="true"></span>
+        <div class="tile__art" aria-hidden="true">🎨</div>
+        <div class="tile__meta">
+          <h2 class="tile__title">Color Notes</h2>
+          <p class="tile__kicker">days and journeys, sorted by a single color — one note at a time.</p>
         </div>
       </a>
 

@@ -1,0 +1,788 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Peach &amp; Pepper — Placebo · Yajing Wang</title>
+  <meta name="description" content="Two snakes live here — Peach the corn snake, and Pepper the ball python." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ctext y='50' font-size='48'%3E%F0%9F%90%8D%3C/text%3E%3C/svg%3E" />
+
+  <!-- Fonts: match cats page & rest of site -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter:wght@300;400;500;600&family=Italiana&family=Long+Cang&family=Noto+Serif+SC:wght@400;600&family=Caveat:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Satisfy&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Zhi+Mang+Xing&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Kalam&display=swap" rel="stylesheet">
+  
+  <style>
+    :root{
+      --pink-bg: #ffe0ea;
+      --pink-soft: #ffc9d8;
+      --pink-hot:  #ff6d9e;
+      --ink:       #1b1114;
+      --ink-soft:  #3a2a30;
+      --mist:      #fff4f8;
+      --cream:     #fff6ee;
+      --sage:      #6e8a5d;           /* snake-tile accent from placebo hub */
+      --peach:     #ff9a7b;           /* Peach the corn snake accent */
+      --pepper:    #3e2a1c;           /* Pepper the ball python accent */
+      --line:      rgba(27,17,20,.12);
+    }
+
+    *,*::before,*::after{ box-sizing:border-box; }
+    html,body{ margin:0; padding:0; }
+
+    body{
+      font-family:"Inter", ui-sans-serif, system-ui, sans-serif;
+      color:var(--ink);
+      background:var(--pink-bg);
+      -webkit-font-smoothing:antialiased;
+      min-height:100svh;
+      position:relative;
+      overflow-x:hidden;
+    }
+
+    /* paper grain */
+    body::before{
+      content:"";
+      position:fixed; inset:0;
+      pointer-events:none; z-index:0;
+      mix-blend-mode:multiply; opacity:.18;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.11  0 0 0 0 0.07  0 0 0 0 0.08  0 0 0 0.35 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    }
+
+    a{ color:inherit; }
+
+    /* ───────── top bar (brand logo — matches other pages) ───────── */
+    .bar{
+      position:relative; z-index:3;
+      display:flex; align-items:center; justify-content:space-between;
+      padding: 28px clamp(24px, 4.2vw, 56px);
+    }
+    .brand {
+      position: relative;
+      display: inline-block;
+      font-size: 22px;
+      color: var(--ink);
+      text-decoration: none;
+      line-height: 1.2;
+      min-width: 7em;
+      height: 1.5em;
+    }
+    .brand__name {
+      position: absolute;
+      left: 0; top: 0;
+      white-space: nowrap;
+      opacity: 0;
+      transition: opacity 0.08s ease;
+    }
+    .brand__name.is-active { opacity: 1; }
+    .brand__name--en {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-weight: 500;
+      letter-spacing: 0.4px;
+    }
+    .brand__name--cn {
+      font-family: 'Zhi Mang Xing', 'Noto Serif SC', serif;
+      font-weight: 400;
+      font-size: 1.6em;
+      letter-spacing: 0.04em;
+      line-height: 1;
+      top: -0.1em;
+    }
+
+    .crumbs{
+      font-family:"Inter", sans-serif;
+      font-size:11px;
+      letter-spacing:.28em;
+      text-transform:uppercase;
+      color:var(--ink-soft);
+      display:flex; gap:14px; align-items:center;
+    }
+    .crumbs a{ text-decoration:none; opacity:.7; transition:opacity .2s; }
+    .crumbs a:hover{ opacity:1; }
+    .crumbs .dot{ width:4px; height:4px; border-radius:50%; background:var(--sage); }
+
+    /* ───────── masthead ───────── */
+    .masthead{
+      position:relative; z-index:2;
+      padding: clamp(14px, 3vw, 40px) clamp(20px, 5vw, 64px) clamp(24px, 4vw, 48px);
+    }
+    .masthead__kicker{
+      font-family:"Inter", sans-serif;
+      font-size: 11px;
+      letter-spacing:.32em;
+      text-transform:uppercase;
+      color:var(--ink-soft);
+      margin-bottom: .9rem;
+      display:flex; align-items:center; gap:12px;
+    }
+    .masthead__kicker .tilde{ color:var(--sage); font-family:"Fraunces", serif; font-style:italic; letter-spacing:0; }
+
+    .masthead__title{
+      font-family: "Fraunces", serif;
+      font-weight: 600;
+      font-optical-sizing: auto;
+      font-variation-settings: "opsz" 144;
+      font-size: clamp(66px, 12vw, 180px);
+      line-height: .95;
+      letter-spacing: -0.035em;
+      margin: 0;
+      color: var(--ink);
+      position: relative;
+    }
+    .masthead__title .amp{
+      font-family: "Fraunces", serif;
+      font-style: italic;
+      font-weight: 400;
+      color: var(--sage);
+      padding: 0 .04em;
+    }
+    .masthead__title .snake-mark{
+      display: inline-block;
+      width: .78em;
+      height: .88em;
+      margin-left: .18em;
+      vertical-align: -.08em;
+      color: var(--sage);
+    }
+    .masthead__title .snake-mark svg{
+      width:100%; height:100%;
+      overflow: visible;
+      display: block;
+    }
+
+    .masthead__meta{
+      display:flex;
+      flex-wrap:wrap;
+      gap: clamp(18px, 3vw, 44px);
+      align-items:baseline;
+      margin-top: 1.2rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--line);
+    }
+    .meta__item{
+      font-family:"Inter", sans-serif;
+      font-size:13px;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      color:var(--ink-soft);
+    }
+    .meta__item b{
+      display:block;
+      font-weight:500;
+      letter-spacing:.04em;
+      text-transform:none;
+      font-size:15px;
+      color:var(--ink);
+      margin-top:3px;
+    }
+    .meta__item .hand{
+      font-family:"Satisfy", cursive;
+      font-size:22px;
+      letter-spacing:0;
+      color:var(--ink);
+      text-transform:none;
+    }
+
+    /* ───────── shared intro ───────── */
+    .intro{
+      position:relative; z-index:2;
+      padding: 0 clamp(16px, 4vw, 56px);
+      margin: 0 0 clamp(40px, 6vw, 80px);
+    }
+    .intro__lede{
+      font-family: "Kalam", cursive;
+      font-weight: 500;
+      font-size: clamp(22px, 2.1vw, 32px);
+      line-height: 1.45;
+      color: var(--ink);
+      max-width: 100%;
+      letter-spacing: 0.005em;
+    }
+    .intro__lede em{
+      font-family: "Fraunces", serif;
+      font-style: italic;
+      font-weight: 500;
+      color: var(--sage);
+      font-size: .88em;
+    }
+
+    /* ───────── per-snake section header ───────── */
+    .snake{
+      position: relative; z-index: 2;
+      padding: 0 clamp(16px, 4vw, 56px);
+      margin-bottom: clamp(40px, 6vw, 80px);
+    }
+    .snake__head{
+      margin-bottom: clamp(20px, 3vw, 36px);
+      padding-bottom: clamp(14px, 2vw, 24px);
+      border-bottom: 1px solid var(--line);
+    }
+    .snake__head-row{
+      display: flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: clamp(12px, 2vw, 24px);
+      margin-bottom: .6rem;
+    }
+    .snake__num{
+      font-family: "Inter", sans-serif;
+      font-size: 12px;
+      letter-spacing: .28em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      opacity: .6;
+    }
+    .snake__name{
+      font-family: "Fraunces", serif;
+      font-weight: 600;
+      font-optical-sizing: auto;
+      font-size: clamp(42px, 6vw, 88px);
+      line-height: 1;
+      letter-spacing: -0.025em;
+      margin: 0;
+      color: var(--ink);
+    }
+    .snake__sci{
+      font-family: "Fraunces", serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: clamp(14px, 1.2vw, 18px);
+      color: var(--ink-soft);
+      opacity: .85;
+    }
+    .snake__intro{
+      font-family: "Kalam", cursive;
+      font-weight: 500;
+      font-size: clamp(20px, 1.8vw, 28px);
+      line-height: 1.4;
+      color: var(--ink);
+      max-width: 62ch;
+      margin: .4rem 0 0;
+    }
+    .snake__meta{
+      display: flex;
+      flex-wrap: wrap;
+      gap: clamp(16px, 2.6vw, 36px);
+      margin-top: 1rem;
+    }
+
+    /* per-snake accent tint on the name + num */
+    .snake--peach  .snake__num{ color: var(--peach); opacity: 1; }
+    .snake--pepper .snake__num{ color: var(--pepper); opacity: 1; }
+    .snake--peach  .snake__head{ border-bottom-color: rgba(255, 154, 123, .35); }
+    .snake--pepper .snake__head{ border-bottom-color: rgba(62, 42, 28, .22); }
+
+    /* ───────── plates (book-plate gallery — one photo per spread) ───────── */
+    .plates{
+      position: relative; z-index: 2;
+      display: flex;
+      flex-direction: column;
+      gap: clamp(56px, 7vw, 120px);
+      padding: clamp(20px, 3vw, 40px) 0 clamp(10px, 2vw, 24px);
+    }
+
+    .plate{
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: clamp(28px, 5vw, 80px);
+      align-items: center;
+      position: relative;
+    }
+    /* alternate the pages */
+    .plate:nth-child(even){
+      grid-template-columns: 1fr 1.15fr;
+    }
+    .plate:nth-child(even) .plate__frame { order: 2; }
+    .plate:nth-child(even) .plate__label { order: 1; text-align: right; align-items: flex-end; }
+
+    .plate__frame{
+      position: relative;
+      background: var(--cream);
+      padding: clamp(10px, 1.2vw, 18px);
+      box-shadow: 0 1px 0 rgba(27,17,20,.05), 0 24px 36px -26px rgba(27,17,20,.28);
+      border: 1px solid var(--line);
+      transition: transform .6s cubic-bezier(.2,.7,.2,1), box-shadow .5s;
+    }
+    .plate__frame::after{
+      content: "";
+      position: absolute; inset: 5px;
+      border: 1px solid var(--line);
+      opacity: .55;
+      pointer-events: none;
+    }
+    .plate__frame:hover{
+      transform: translateY(-3px);
+      box-shadow: 0 1px 0 rgba(27,17,20,.07), 0 36px 50px -28px rgba(27,17,20,.38);
+    }
+    .plate__frame img{
+      display: block;
+      width: 100%; height: auto;
+      object-fit: cover;
+    }
+    .plate__corner{
+      position: absolute;
+      font-family: "Fraunces", serif;
+      font-style: italic;
+      font-size: 11px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      opacity: .7;
+      background: var(--pink-bg);
+      padding: 2px 8px;
+      border: 1px solid var(--line);
+    }
+    .plate__corner--tl{ top: -10px; left: 14px; }
+    .plate__corner--br{ bottom: -10px; right: 14px; }
+
+    .plate__label{
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 14px;
+    }
+    .plate__eyebrow{
+      font-family: "Inter", sans-serif;
+      font-size: 10px;
+      letter-spacing: .32em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      opacity: .7;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .plate__eyebrow .dash{
+      display: inline-block;
+      width: 28px; height: 1px;
+      background: currentColor;
+      opacity: .5;
+    }
+    .plate__title{
+      font-family: "Fraunces", serif;
+      font-weight: 500;
+      font-style: italic;
+      font-optical-sizing: auto;
+      font-variation-settings: "opsz" 96;
+      font-size: clamp(30px, 3.6vw, 54px);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      margin: 0;
+    }
+    .plate__note{
+      font-family: "Satisfy", cursive;
+      font-weight: 500;
+      font-size: clamp(19px, 1.7vw, 26px);
+      line-height: 1.45;
+      color: var(--ink);
+      max-width: 42ch;
+      margin: 0;
+    }
+    .plate:nth-child(even) .plate__note{ margin-left: auto; }
+    .plate__tag{
+      font-family: "Inter", sans-serif;
+      font-size: 10px;
+      letter-spacing: .26em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      opacity: .6;
+      padding-top: 10px;
+      border-top: 1px solid var(--line);
+      align-self: stretch;
+      max-width: 16em;
+    }
+    .plate:nth-child(even) .plate__tag{ text-align: right; margin-left: auto; }
+
+    /* per-snake accent: thin corner rule in the accent colour */
+    .snake--peach  .plate__frame{ border-color: rgba(255, 154, 123, .45); }
+    .snake--peach  .plate__frame::after{ border-color: rgba(255, 154, 123, .35); }
+    .snake--pepper .plate__frame{ border-color: rgba(62, 42, 28, .35); }
+    .snake--pepper .plate__frame::after{ border-color: rgba(62, 42, 28, .25); }
+    .snake--peach  .plate__eyebrow{ color: var(--peach); opacity: 1; }
+    .snake--pepper .plate__eyebrow{ color: var(--pepper); opacity: .9; }
+
+    /* placeholder poster look for missing images (reused inside plates) */
+    .plate__placeholder{
+      aspect-ratio: var(--ar, 4/5);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--ink-soft);
+      font-family: "Fraunces", serif; font-style: italic;
+      font-size: clamp(14px, 1.1vw, 16px);
+      text-align: center;
+      padding: 10px 14px;
+      position: relative;
+    }
+    .snake--peach .plate__placeholder{
+      background:
+        linear-gradient(135deg, rgba(255,154,123,.22), rgba(255,201,216,.45)),
+        repeating-linear-gradient(45deg, rgba(27,17,20,.05) 0 2px, transparent 2px 10px),
+        var(--cream);
+    }
+    .snake--pepper .plate__placeholder{
+      background:
+        linear-gradient(135deg, rgba(62,42,28,.2), rgba(110,138,93,.3)),
+        repeating-linear-gradient(45deg, rgba(27,17,20,.06) 0 2px, transparent 2px 10px),
+        var(--cream);
+    }
+    .plate__placeholder span{
+      display: block; opacity: .75;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      padding: 6px 10px;
+      letter-spacing: .02em;
+    }
+    .plate__placeholder::after{
+      content: "〜";
+      position: absolute; top: 10px; right: 12px;
+      font-size: 14px; opacity: .5;
+    }
+
+    /* varied aspect ratios */
+    .ar-portrait   { --ar: 3/4; }
+    .ar-square     { --ar: 1/1; }
+    .ar-landscape  { --ar: 4/3; }
+    .ar-tall       { --ar: 2/3; }
+    .ar-wide       { --ar: 3/2; }
+
+    /* stack plates on narrow screens */
+    @media (max-width: 820px){
+      .plate,
+      .plate:nth-child(even){
+        grid-template-columns: 1fr;
+        gap: clamp(18px, 3vw, 28px);
+      }
+      .plate:nth-child(even) .plate__frame{ order: 0; }
+      .plate:nth-child(even) .plate__label{
+        order: 0; text-align: left; align-items: flex-start;
+      }
+      .plate:nth-child(even) .plate__note,
+      .plate:nth-child(even) .plate__tag{ margin-left: 0; text-align: left; }
+    }
+
+    /* ───────── divider between the two snakes ───────── */
+    .divider{
+      position: relative; z-index: 2;
+      display: flex; align-items: center; justify-content: center;
+      gap: 14px;
+      padding: clamp(20px, 3vw, 40px) 0;
+      color: var(--sage);
+      opacity: .7;
+    }
+    .divider .line{
+      height: 1px;
+      width: clamp(40px, 8vw, 140px);
+      background: currentColor;
+      opacity: .4;
+    }
+    .divider .wave{
+      display:inline-block;
+      width: 60px; height: 18px;
+      color: var(--sage);
+    }
+    .divider .wave svg{ width:100%; height:100%; overflow:visible; }
+
+    /* ───────── coda ───────── */
+    .coda{
+      position:relative; z-index:2;
+      text-align:center;
+      padding: 0 clamp(20px, 5vw, 64px) clamp(60px, 8vw, 120px);
+    }
+    .coda__mark{
+      display: inline-flex;
+      justify-content: center;
+      width: 128px;
+      height: 44px;
+      color: var(--sage);
+      margin-bottom: .75rem;
+    }
+    .coda__mark svg{
+      width: 100%; height: 100%;
+      overflow: visible;
+      display: block;
+    }
+    .coda__line{
+      font-family: "Fraunces", serif;
+      font-weight: 500;
+      font-style: italic;
+      font-size: clamp(26px, 3.4vw, 46px);
+      line-height: 1.22;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+      margin: .4rem 0 .8rem;
+    }
+    .coda__cite{
+      font-family: "Fraunces", serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: clamp(12px, 1vw, 14px);
+      letter-spacing: .04em;
+      color: var(--ink-soft);
+      opacity: .75;
+    }
+
+    /* ───────── footer ───────── */
+    .foot{
+      position:relative; z-index:2;
+      padding: clamp(20px, 3vw, 32px) clamp(20px, 4.2vw, 54px);
+      display:flex; align-items:center; justify-content:space-between;
+      border-top: 1px solid var(--line);
+      font-family:"Inter", sans-serif;
+      font-size:11px; letter-spacing:.26em; text-transform:uppercase;
+      color:var(--ink-soft);
+    }
+    .foot a{ text-decoration:none; opacity:.8; }
+    .foot a:hover{ opacity:1; color:var(--sage); }
+    .foot .foot__num{ font-family:"Fraunces", serif; font-style:italic; letter-spacing:.1em; text-transform:none; }
+
+    /* ───────── corner brackets ───────── */
+    .corner{
+      position:fixed; width:22px; height:22px;
+      border:1px solid var(--ink); opacity:.35;
+      pointer-events:none; z-index:1;
+    }
+    .corner.tl{ top:14px; left:14px; border-right:none; border-bottom:none; }
+    .corner.tr{ top:14px; right:14px; border-left:none; border-bottom:none; }
+    .corner.bl{ bottom:14px; left:14px; border-right:none; border-top:none; }
+    .corner.br{ bottom:14px; right:14px; border-left:none; border-top:none; }
+
+    @media (prefers-reduced-motion: reduce){
+      figure.shot{ transition:none; }
+      figure.shot:hover{ transform:none; }
+    }
+  </style>
+</head>
+<body>
+  <span class="corner tl" aria-hidden="true"></span>
+  <span class="corner tr" aria-hidden="true"></span>
+  <span class="corner bl" aria-hidden="true"></span>
+  <span class="corner br" aria-hidden="true"></span>
+
+  <header class="bar">
+    <a href="../index.html" class="brand" aria-label="Yajing Wang - 王雅靖">
+      <span class="brand__name brand__name--en is-active">Yajing Wang</span>
+      <span class="brand__name brand__name--cn">王雅靖</span>
+    </a>
+    <nav class="crumbs" aria-label="breadcrumb">
+      <a href="../index.html">Home</a>
+      <span class="dot" aria-hidden="true"></span>
+      <a href="../placebo.html">Placebo</a>
+      <span class="dot" aria-hidden="true"></span>
+      <span aria-current="page">Snakes</span>
+    </nav>
+  </header>
+
+  <main>
+    <!-- ──────────────── MASTHEAD ──────────────── -->
+    <section class="masthead">
+      <div class="masthead__kicker">
+        <span>§ 04 · 04 — the snake chapter</span>
+        <span class="tilde">ex libris serpentum</span>
+      </div>
+      <h1 class="masthead__title">
+        Peach<span class="amp">&amp;</span>Pepper<span class="snake-mark" aria-hidden="true">
+          <svg viewBox="23.5 34.1 313.3 353.2" xmlns="http://www.w3.org/2000/svg">
+            <path fill="currentColor" d="M240.6,146c-56.7,1.2-48.7,74.6-88.2,72.8c-28.8-1.3-14.8-45.9,7.8-69.9c20.3-21.7,72.8-51.3,49.8-83.1 c-23-31.7-75.9-21.3-97.3,0c-22.6,22.6,3.8,59.8,0,63.6c-3.8,3.8-16.3-3.5-24.8,0c-8.5,3.5-20.9,12.2-20.9,16.4 c0,1.1,0.3,2.6,1.1,4.1c-4.3,0.7-6.8,3.2-8.2,9.3c-2.1,9.5-5.9,14.9-16.8,17.3c13.3-1,17.2-10.5,17.2-10.5 c-1.6,9.4-7.1,11.4-14.8,12.6c19.5,0,17.1-15.3,18.3-21.4c0.7-3.6,3.5-4.8,5.9-5.1c2.9,3,8.6,5.7,19.8,5.7c19,0,42.8-0.2,36.8-41.2 s13.8-52,38.2-49.5c29.9,3.1,21.8,24.8-9,50s-80.5,103.2-35.5,129.2c54.6,31.6,76.2-8,102-41.2s82,10.2,27.5,57.3 s-116.8,7.8-158.2-22s-67.8,20.3-55,58s82.5,45,114,42.8c33.9-2.4,54.5-1.8,54.5,13.8s-41.8,3.5-43.5,14.8 c14.5-10,60.8,17.5,60.8-18.2c0-24.8-29-29-69.8-29s-67.5-7-82.8-30.2s4-27.5,34.5-3s153,50,191-9.2 C336.8,214.2,297.2,144.9,240.6,146z"/>
+          </svg>
+        </span>
+      </h1>
+      <div class="masthead__meta">
+        <div class="meta__item">
+          residents
+          <b>One here, one elsewhere</b>
+        </div>
+        <div class="meta__item">
+          Peach
+          <b>Corn snake</b>
+        </div>
+        <div class="meta__item">
+          Pepper
+          <b>Ball python</b>
+        </div>
+        <div class="meta__item">
+          realm <br>
+          <span class="hand">a warm rock, various opinions</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ──────────────── SHARED INTRO ──────────────── -->
+    <section class="intro">
+      <p class="intro__lede">
+        Two snakes, though only one is here with me now. They are <em>quieter</em> than the
+        reputation suggests, and occasionally more opinionated than you'd expect. 
+      </p>
+    </section>
+
+    <!-- ──────────────── PEACH ──────────────── -->
+    <section class="snake snake--peach" id="peach">
+      <header class="snake__head">
+        <div class="snake__head-row">
+          <span class="snake__num">№ 01</span>
+          <h2 class="snake__name">Peach</h2>
+          <span class="snake__sci">Pantherophis guttatus</span>
+        </div>
+        <p class="snake__intro">
+          A corn snake the color of a pink sunset. He lives with someone else now.
+        </p>
+        <div class="snake__meta">
+          <div class="meta__item">species<b>Corn snake</b></div>
+          <div class="meta__item">now<br><span class="hand">living elsewhere, still loved</span></div>
+        </div>
+      </header>
+
+      <!--
+        ─────────────────────────────────────────────────────────────
+        HOW TO ADD A PHOTO OF PEACH:
+        1. Drop an image into  /assets/snakes/peach/   (e.g. peach-01.jpg)
+        2. Copy one of the <article class="plate"> blocks below.
+        3. Inside .plate__frame, replace the placeholder div with:
+             <img src="../assets/snakes/peach/peach-01.jpg" alt="short description" loading="lazy" />
+        4. Edit the title + handwritten note + tag. Done.
+        Plates alternate left/right automatically (odd/even).
+        ─────────────────────────────────────────────────────────────
+      -->
+      <div class="plates">
+        <article class="plate">
+          <figure class="plate__frame">
+            <span class="plate__corner plate__corner--tl">Plate I.</span>
+            <img src="../assets/snakes/peach/peach-01.jpg"
+                 alt="Peach, a pale corn snake, wrapped around a wrist in soft sunlight, tongue briefly out."
+                 loading="lazy" />
+          </figure>
+          <div class="plate__label">
+            <span class="plate__eyebrow"><span class="dash"></span>№ 01 · Peach</span>
+            <h3 class="plate__title">In sunlight.</h3>
+            <p class="plate__note">Quiet as cream.</p>
+          </div>
+        </article>
+
+        <!-- add more Peach plates here -->
+      </div>
+    </section>
+
+    <!-- ──────────────── divider (snake wave) ──────────────── -->
+    <div class="divider" aria-hidden="true">
+      <span class="line"></span>
+      <span class="wave">
+        <svg viewBox="0 0 60 18">
+          <path d="M2 9 Q8 2 14 9 T26 9 T38 9 T50 9 T58 9" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        </svg>
+      </span>
+      <span class="line"></span>
+    </div>
+
+    <!-- ──────────────── PEPPER ──────────────── -->
+    <section class="snake snake--pepper" id="pepper">
+      <header class="snake__head">
+        <div class="snake__head-row">
+          <span class="snake__num">№ 02</span>
+          <h2 class="snake__name">Pepper</h2>
+          <span class="snake__sci">Python regius</span>
+        </div>
+        <p class="snake__intro">
+          A ball python with strong opinions about most things. Tucks tight and holds a grudge.
+        </p>
+        <div class="snake__meta">
+          <div class="meta__item">species<b>Ball python</b></div>
+          <div class="meta__item">temperament<br><span class="hand">grouchy, gorgeous</span></div>
+        </div>
+      </header>
+
+      <!--
+        ─────────────────────────────────────────────────────────────
+        HOW TO ADD A PHOTO OF PEPPER:
+        1. Drop an image into  /assets/snakes/pepper/   (e.g. pepper-01.jpg)
+        2. Copy one of the <article class="plate"> blocks below.
+        3. Inside .plate__frame, replace the placeholder div with:
+             <img src="../assets/snakes/pepper/pepper-01.jpg" alt="short description" loading="lazy" />
+        4. Edit the title + handwritten note + tag. Done.
+        Plates alternate left/right automatically (odd/even).
+        ─────────────────────────────────────────────────────────────
+      -->
+      <div class="plates">
+        <article class="plate">
+          <figure class="plate__frame">
+            <span class="plate__corner plate__corner--tl">Plate I.</span>
+            <img src="../assets/snakes/pepper/pepper-01.jpg"
+                 alt="Pepper the ball python peering through the leaves of her enclosure."
+                 loading="lazy" />
+          </figure>
+          <div class="plate__label">
+            <span class="plate__eyebrow"><span class="dash"></span>№ 01 · Pepper</span>
+            <h3 class="plate__title">Through the leaves.</h3>
+            <p class="plate__note">She watches, mostly.</p>
+          </div>
+        </article>
+
+        <article class="plate">
+          <figure class="plate__frame">
+            <span class="plate__corner plate__corner--tl">Plate II.</span>
+            <img src="../assets/snakes/pepper/pepper-02.jpg"
+                 alt="Pepper coiled in a tidy spiral on her hide, coconut husk below."
+                 loading="lazy" />
+          </figure>
+          <div class="plate__label">
+            <span class="plate__eyebrow"><span class="dash"></span>№ 02 · Pepper</span>
+            <h3 class="plate__title">The spiral.</h3>
+            <p class="plate__note">Her fortress, rebuilt daily.</p>
+          </div>
+        </article>
+
+        <article class="plate">
+          <figure class="plate__frame">
+            <span class="plate__corner plate__corner--tl">Plate III.</span>
+            <img src="../assets/snakes/pepper/pepper-03.jpg"
+                 alt="Pepper held across a hand in evening light, tulips softly out of focus."
+                 loading="lazy" />
+          </figure>
+          <div class="plate__label">
+            <span class="plate__eyebrow"><span class="dash"></span>№ 03 · Pepper</span>
+            <h3 class="plate__title">Handled, barely.</h3>
+            <p class="plate__note">She disagreed.</p>
+          </div>
+        </article>
+
+        <!-- add more Pepper plates here -->
+      </div>
+    </section>
+
+    <!-- ──────────────── CODA ──────────────── -->
+    <section class="coda">
+      <div class="coda__mark" aria-hidden="true">
+        <svg viewBox="25.3 511.9 505.3 170.5" xmlns="http://www.w3.org/2000/svg">
+          <path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M25.3,513.6c4.7,0.8,9.2,16.2,11.8,20.1c4.8,7.4,11,14,18.6,18.6c15.4,9.2,34.8,8.7,49.7-1.4 c15.6-10.5,26.5-26.6,44.8-33.2c15.8-5.8,36.1-4.1,48.9,7.7c11.2,10.3,13,25.3,9.8,39.4c-3.3,14.3-7.4,31.3,7.5,40.8 c11.8,7.5,28.7,4.7,40-2.2c15.1-9.3,20.6-25.8,27.4-41.2c12.7-28.4,46-49.5,76.1-32.3c16.3,9.3,22.4,27.6,15.1,44.9 c-5.8,13.8-10.6,29.5,4.7,39.5c15.2,9.9,29.2,2.9,42.9-5.1c14.6-8.5,33.2-8.1,44.7,5.4c8,9.4,5.4,34,18.5,36.7 c9.7,2,18.3,1.6,27.7,5.9c5,2.2,17.1,11.8,8.9,17c-12.9,8.2-37.8-6.8-48.6-13.3c-14.4-8.7-8.3-29.4-21.9-38.2 c-15-9.8-27.2,5.9-40.1,11.4c-11.5,4.9-25,5.1-36.5,0c-12.2-5.4-20.8-16.3-24.2-29.1c-2.2-8.6-1.8-17.4,1.9-25.6 c3.9-8.6,9.6-16.3,3.2-25.4c-8.9-12.6-28.4-11.2-39.7-2.6c-13.8,10.6-16.3,30.4-25,44.6c-17.5,28.5-58.8,46.2-88,23.1 c-11.5-9-16.4-23.5-14.7-37.8c1.6-13.4,12.6-32.4,1.9-44.5c-9.7-11-30.2-10.9-42.3-4.8c-16.9,8.6-29.9,23.5-47.9,30.5 C64.1,576.6,33.4,547.3,25.3,513.6C28.1,514.1,28.4,526.8,25.3,513.6z"/>
+        </svg>
+      </div>
+      <p class="coda__line">“They are, reliably,<br/>not what you think.”</p>
+      <p class="coda__cite">in defense of the misunderstood</p>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <span>§ 04 · 04 — Placebo / Snakes</span>
+    <a href="../placebo.html">← back to placebo</a>
+    <span class="foot__num">p. 044</span>
+  </footer>
+
+  <script>
+    // flashing bilingual logo — identical to the other pages
+    (function () {
+      const names = document.querySelectorAll('.brand__name');
+      if (!names.length) return;
+      let i = 0;
+      setInterval(() => {
+        names[i].classList.remove('is-active');
+        setTimeout(() => {
+          i = (i + 1) % names.length;
+          names[i].classList.add('is-active');
+        }, 90);
+      }, 2400);
+    })();
+  </script>
+</body>
+</html>
